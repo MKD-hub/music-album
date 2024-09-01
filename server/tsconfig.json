@@ -1,7 +1,20 @@
 {
     "compilerOptions": {
+        "target": "ESNext",
+        "module": "CommonJS",
+        "moduleResolution": "node",
+        "strict": true,
+        "skipLibCheck": true,
+        "forceConsistentCasingInFileNames": true,
+        "outDir": "./dist",
+        "esModuleInterop": true,
+        "allowSyntheticDefaultImports": true,
         "types": [
-            "node"
+            "node",
+            "express",
+            "morgan"
         ]
-    }
+    },
+    "include": ["src/**/*"],
+    "exclude": ["node_modules"]
 }
