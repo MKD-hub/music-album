@@ -1,10 +1,32 @@
+import { useEffect } from "react"
 import SongItem from "./components/SongItem"
+import { useSelector, useDispatch } from "react-redux"
+import { getSongs, selectError, selectSongs, selectStatus } from "./app/song.slice"
+
 
 function App() {
+
+  const dispatch = useDispatch();
+  const songs = useSelector(selectSongs);
+  const status = useSelector(selectStatus);
+  const error = useSelector(selectError);
+
+  useEffect(() => {
+      try {
+        dispatch(getSongs())
+      }
+      catch(error) {
+        console.log(error);
+      }
+  }, [])
+
+  console.log(status)
+
 
   return (
     <div>
       <div>
+        
 
       </div>
 
