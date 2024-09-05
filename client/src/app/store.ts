@@ -2,12 +2,14 @@ import { Action, configureStore, ThunkAction, Tuple } from "@reduxjs/toolkit";
 import createSagaMiddleWare from 'redux-saga';
 import rootSaga from "./sagas/root";
 import { songsReducer } from "./song.slice";
+import { genreReducer } from "./genres.slice";
 
 const sagaMiddleWare = createSagaMiddleWare();
 
 const Store = configureStore({
     reducer: {
-        songsReducer
+        songsReducer,
+        genreReducer
     },
     middleware: () => new Tuple(sagaMiddleWare)
 })

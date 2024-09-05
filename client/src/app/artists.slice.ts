@@ -1,5 +1,5 @@
-import { createSlice } from "@reduxjs/toolkit";
-
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { IArtist } from "../api/song.type";
 interface artistState {
     artists: string[]
 }
@@ -13,6 +13,17 @@ const artistSlice = createSlice({
     initialState,
     reducers: {
 
+    },
+    extraReducers: (builder) => {
+        builder
+        .addCase(getArtists, (state) => {
+            state.status = 'pending'
+        })
+
+        .addCase(fetchArtistSuccess, (state, action: PayloadAction<IArtist[]>) => {
+            state.artists = action.payload
+            state.status = 'success'
+        })
     }
 })
 

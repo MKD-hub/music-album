@@ -1,13 +1,38 @@
 import Songs from '../models/song.model';
 import { Request, Response } from 'express';
-import { PipelineStage } from 'mongoose';
+import { Collection, Model, PipelineStage } from 'mongoose';
 
 const getSongs = async (req: Request, res: Response): Promise<void> => {
     try {
-        const songs = await Songs.find({});
-        res.status(200).json(songs);
-    }
-    catch (error: unknown) {
+        const page = parseInt(req.query.page as string || '1', 10);
+        const limit = 10;
+
+        if (isNaN(page) || page < 1) {
+            res.status(400).json({ message: 'Invalid page number' });
+        }
+
+        const skip = (page - 1) * limit;
+        
+        const [songs, totalCount] = await Promise.all([
+            Songs.find({})
+                .skip(skip)
+                .limit(limit),
+            Songs.countDocuments()
+        ]);
+
+        const totalPages = Math.ceil(totalCount / limit);
+
+        res.status(200).json({
+            songs,
+            meta: {
+                currentPage: page,
+                perPage: limit,
+                totalPages,
+                totalCount
+            }
+        });
+    } catch (error: unknown) {
+        console.error('Error fetching songs:', error);
         if (error instanceof Error) {
             res.status(500).json({ message: error.message });
         } else {
@@ -17,8 +42,25 @@ const getSongs = async (req: Request, res: Response): Promise<void> => {
 }
 
 const getGenres = async (req: Request, res: Response): Promise<void> => {
-    try {
-        const genres = await Songs.distinct('genre');
+    try{
+    const genreNames = await Songs.distinct('genre');
+
+    // Get the count of songs in each genre
+    const genreCounts = await Songs.aggregate([
+        {
+            $group: {
+                _id: "$genre",
+                count: { $sum: 1 }
+            }
+        }
+    ]);
+
+    // Combine genres and counts
+    const genres = genreNames.map(genre => ({
+        genre,
+        count: genreCounts.find((gc: { _id: string; }) => gc._id === genre)?.count || 0
+    }));
+
         res.status(200).json(genres)
     }
     catch (error: unknown) {
@@ -117,25 +159,6 @@ const getAlbumByArtist = async (req: Request, res: Response): Promise<void> => {
         }
     }
 };
-
-// const getAlbumByArtist = async (req: Request, res: Response): Promise<void> => {
-//     const limit = typeof req.query.limit === 'string' && !isNaN(parseInt(req.query.limit)) ? parseInt(req.query.limit) : 10;
-//     const skip = Math.max(typeof req.query.page === 'number' ? req.query.page : 0, 0) - 1;
-    
-//     try {
-//         const artist: string = req.params.artist ?? {};
-
-//         const albums = await Songs.distinct('album', { artist: artist })
-//         res.status(200).json(albums);   
-//     }
-//     catch (error: unknown) {
-//         if (error instanceof Error) {
-//             res.status(500).json({ message: error.message });
-//         } else {
-//             res.status(500).json({ message: 'An unexpected error occurred' });
-//         }
-//     }
-// }
 
 const createSong = async (req: Request, res: Response): Promise<void> => {
     try {

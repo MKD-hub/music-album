@@ -6,18 +6,16 @@ import {
 } from '../../api/api';
 
 
-import { fetchSongsFailure, fetchSongsPending, fetchSongsSuccess } from '../song.slice';
-import { fetchingGenreSongs, fetchGenreSongSuccess, fetchGenreSongsFailure } from '../song.slice';
-import { fetchingArtistSongs, fetchArtistSongSuccess, fetchArtistSongsFailure } from '../song.slice';
+import { fetchSongsFailure, fetchSongsSuccess } from '../song.slice';
+import { fetchGenreSongSuccess, fetchGenreSongsFailure } from '../song.slice';
+import { fetchArtistSongSuccess, fetchArtistSongsFailure } from '../song.slice';
 import { ISong } from '../../api/song.type';
 import { PayloadAction } from '@reduxjs/toolkit';
 
-function* getSongs() {
+function* getSongs( action: PayloadAction<number> ) {
     try {
         // pending data fetch
-        yield put(fetchSongsPending());
-
-        const songs: ISong[] = yield call(fetchSongs);
+        const songs: ISong[] = yield call(fetchSongs, action.payload);
 
         yield put(fetchSongsSuccess(songs));
     }
@@ -28,8 +26,6 @@ function* getSongs() {
 
 function* getSongsByGenre(action: PayloadAction<string>) {
     try {
-        yield put(fetchingGenreSongs());
-
         const songs: ISong[] = yield call(fetchSongsByGenre, action.payload);
 
         yield put(fetchGenreSongSuccess(songs));
@@ -41,8 +37,6 @@ function* getSongsByGenre(action: PayloadAction<string>) {
 
 function* getSongsByArtist(action: PayloadAction<string>) {
     try {
-        yield put(fetchingArtistSongs());
-
         const songs: ISong[] = yield call(fetchSongsByArtist, action.payload);
 
         yield put(fetchArtistSongSuccess(songs));

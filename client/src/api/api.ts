@@ -1,14 +1,15 @@
 import axios, { AxiosError } from 'axios';
-import { ISong } from './song.type';
+import { ISong, Response } from './song.type';
 
 const targetUrl = import.meta.env.VITE_API_URL;
+console.log(targetUrl, "why?")
 
-const fetchSongs = async (): Promise<ISong[] | []> => {
+const fetchSongs = async ( page: number ): Promise<Response> => {
     try {
-        const response = await axios.get(`${targetUrl}/`);
+        const response = await axios.get(`${targetUrl}/songs?page=${page}`);
         return response.data;
     }
-    catch (error: unknown) {
+    catch (error: unknown) {    
         if (error instanceof AxiosError) {
             throw error.response ? error.response.data : error.message;
         } else {

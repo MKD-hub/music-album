@@ -15,7 +15,7 @@ import {
 const router = express.Router();
 
 
-router.get('/', getSongs);
+router.get('/songs', getSongs);
 router.get('/get_genres', getGenres);
 router.get('/get_artists', getArtists);
 router.get('/song/:artist', getSongsByArtist);

@@ -1,15 +1,14 @@
-import { ActionCreatorWithoutPayload, ActionCreatorWithPayload, createAction} from '@reduxjs/toolkit';
-
-
+import { ActionCreatorWithOptionalPayload, ActionCreatorWithPayload, createAction} from '@reduxjs/toolkit';
 
 function createAsyncActions<P>(prefix: string): [
-  ActionCreatorWithoutPayload,
-  ActionCreatorWithoutPayload,
+  ActionCreatorWithOptionalPayload<number | undefined>,
   ActionCreatorWithPayload<P>,
   ActionCreatorWithPayload<unknown>
 ] {
-  const get = createAction(`${prefix}/get`);
-  const pending = createAction(`${prefix}/pending`);
+  const get = createAction(`${prefix}/get`, (payload?: number) => ({
+    // number is for pagination
+    payload,
+  }));
   const success = createAction(`${prefix}/success`, (payload: P) => ({
     payload,
   }));
@@ -17,7 +16,11 @@ function createAsyncActions<P>(prefix: string): [
     payload,
   }));
 
-  return [get, pending, success, failure];
+  return [
+    get, 
+    success, 
+    failure
+  ];
 }
 
 export { createAsyncActions };

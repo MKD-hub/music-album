@@ -1,3 +1,8 @@
+interface Response {
+    songs: ISong[],
+    meta: Record<string, number>
+}
+
 interface ISong {
     title: string,
     artist: string,
@@ -17,11 +22,12 @@ interface IArtist {
 }
 
 interface IGenre {
-    name: string,
+    genre: string,
     numberOfSongsInGenre: number
 }
 
 export type {
+    Response,
     ISong,
     IAlbum,
     IArtist,
