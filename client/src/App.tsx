@@ -43,11 +43,6 @@ function App() {
 
   
 
-  
-
-  console.log(currentPage, "songs")
-
-
   return (
     <Box
       padding={{ base: '36px', sm: '64px'}}
@@ -121,28 +116,31 @@ function App() {
               marginTop={'18px'}
             >
               Maybe try <Link href="/" color={'blue'}>refreshing</Link> the page
-              Details {error}
+              <br/>
+              {status === 'error' ? error as String : 'oops something went wrong'}
             </Text>
           </Container>
         }
 
-        <ButtonGroup
-          marginTop={'32px'}
-        >
-          <Button
-            onClick={ () => handlePageChange(dispatch, false) }
-            isDisabled={currentPage === 1}
+        {status === 'success' && 
+          <ButtonGroup
+            marginTop={'32px'}
           >
-            Prev
-          </Button>
+            <Button
+              onClick={ () => handlePageChange(dispatch, false) }
+              isDisabled={currentPage === 1}
+            >
+              Prev
+            </Button>
 
-          <Button
-            onClick={ () => handlePageChange(dispatch, true) }
-            isDisabled={currentPage === totalPages}
-          >
-            Next
-          </Button>
-        </ButtonGroup>
+            <Button
+              onClick={ () => handlePageChange(dispatch, true) }
+              isDisabled={currentPage === totalPages}
+            >
+              Next
+            </Button>
+          </ButtonGroup>
+        }
 
       </Box>
 

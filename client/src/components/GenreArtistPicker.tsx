@@ -1,34 +1,45 @@
-import { Box, Button, Heading, Container, Flex, Center, Spacer, Wrap, WrapItem } from "@chakra-ui/react"
+import { Box, Button, Heading, Flex, Center, Spacer, Wrap } from "@chakra-ui/react"
 import { Dispatch, SetStateAction, useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { getGenres, selectGenres } from "../app/genres.slice"
 
-interface GenreArtistPickerProps {
-    selection: string,
-    setSelection: Dispatch<SetStateAction<string>>,
-    selectionsList: string[]
-}
+import { IGenre, IArtist } from "../api/song.type"
 
-
-const HandleChange = (dispatch: Dispatch<any>, genres: boolean) => {
-  if (genres) {
-    dispatch(getGenres());
+const HandleChange = (dispatch: Dispatch<any>, genresSelected: boolean, genres: IGenre[], artists: IArtist[], setSelectionList: Dispatch<SetStateAction<IGenre[] | IArtist[]>> ) => {
+  if (genresSelected) {
+    setSelectionList(genres) 
+  }
+  else {
+    if (artists.length > 0) {
+      setSelectionList(artists)
+      // if artists was fetched before, do not refetch
+    }
+    else {
+      // fetch artists here and setSelectionList
+    }
   }
   
 }
 
+
+
 const GenreArtistPicker = () => {
 
+  const genres = useSelector(selectGenres);
+  
   useEffect(() => {
     dispatch(getGenres());
-  }, [])
-
-
+    setSelectionList(genres)
+  }, [genres])
+  
+  
   const dispatch = useDispatch();
   const [selection, setSelection] = useState('Genre');
-  const selectionList = useSelector(selectGenres)
+  const [selectionList, setSelectionList] = useState<IGenre[]>([]); // use selectors to get genres or artists and set this to a state
 
-  console.log(selectionList, "testing")
+
+  
+
   return (
     <Box
       maxW={'100ch'}
@@ -68,8 +79,9 @@ const GenreArtistPicker = () => {
       >
         {selectionList.map((selection) => {
           return(
-           <Button>
+           <Button key={selection.genre}>
               {selection.genre}
+              ({selection.count})
            </Button>
           );
         })}

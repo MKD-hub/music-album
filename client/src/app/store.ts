@@ -3,13 +3,15 @@ import createSagaMiddleWare from 'redux-saga';
 import rootSaga from "./sagas/root";
 import { songsReducer } from "./song.slice";
 import { genreReducer } from "./genres.slice";
+import { createSongReducer } from "./createSong.slice";
 
 const sagaMiddleWare = createSagaMiddleWare();
 
 const Store = configureStore({
     reducer: {
         songsReducer,
-        genreReducer
+        genreReducer,
+        createSongReducer
     },
     middleware: () => new Tuple(sagaMiddleWare)
 })

@@ -3,7 +3,7 @@ import { ISong, type Response } from "../api/song.type";
 import { createAsyncActions } from "./utils/createAsyncAction";
 interface songState {
     songs: ISong[],
-    status: 'pending' | 'success' | 'error' | ''
+    status: 'pending' | 'success' | 'error' | '',
     error: unknown | null,
     pageNumber: number,
     totalPages: number
@@ -18,7 +18,6 @@ const initialState: songState = {
 };
 
 
-
 const songSlice = createSlice({
     name: 'song',
     initialState,
@@ -28,6 +27,17 @@ const songSlice = createSlice({
         },
         decrementPage: (state: songState) => {
             state.pageNumber -= 1;
+        },
+        updateList: (state: songState, action: PayloadAction<ISong>) => {
+            if (state.songs.length < 10) {
+
+                // Only update the list when the user can see it
+                // There is no point updating it if it's going to be added to the next page anyway
+                state.songs.push(action.payload);
+            }
+            else {
+                state.pageNumber = state.totalPages;
+            }
         }
     },
     extraReducers: (builder) => {
@@ -46,7 +56,7 @@ const songSlice = createSlice({
         .addCase(fetchSongsFailure, (state, action: PayloadAction<unknown>) => {
             state.error = action.payload
             state.status = 'error'
-        }) 
+        })
     }      
 })
 
@@ -54,7 +64,7 @@ export const [getSongs, fetchSongsSuccess, fetchSongsFailure] = createAsyncActio
 export const [getSongsByGenre, fetchGenreSongSuccess, fetchGenreSongsFailure] = createAsyncActions<ISong[]>('songs/fetch/genre');
 export const [getSongsByArtist, fetchArtistSongSuccess, fetchArtistSongsFailure] = createAsyncActions<ISong[]>('songs/fetch/artist');
 
-export const { incrementPage, decrementPage } = songSlice.actions;
+export const { incrementPage, decrementPage, updateList } = songSlice.actions;
 
 export const selectSongs = (state: { songsReducer: songState }) => state.songsReducer.songs;
 
@@ -65,6 +75,5 @@ export const selectError = (state: { songsReducer: songState }) => state.songsRe
 export const selectPageNumber = (state: { songsReducer: songState }) => state.songsReducer.pageNumber;
 
 export const selectTotalPages = (state: { songsReducer: songState }) => state.songsReducer.totalPages;
-
 
 export const { reducer: songsReducer } = songSlice;

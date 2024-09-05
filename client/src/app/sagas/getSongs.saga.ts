@@ -9,13 +9,13 @@ import {
 import { fetchSongsFailure, fetchSongsSuccess } from '../song.slice';
 import { fetchGenreSongSuccess, fetchGenreSongsFailure } from '../song.slice';
 import { fetchArtistSongSuccess, fetchArtistSongsFailure } from '../song.slice';
-import { ISong } from '../../api/song.type';
+import { ISong, Response } from '../../api/song.type';
 import { PayloadAction } from '@reduxjs/toolkit';
 
 function* getSongs( action: PayloadAction<number> ) {
     try {
         // pending data fetch
-        const songs: ISong[] = yield call(fetchSongs, action.payload);
+        const songs: Response = yield call(fetchSongs, action.payload);
 
         yield put(fetchSongsSuccess(songs));
     }

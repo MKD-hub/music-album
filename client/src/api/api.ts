@@ -2,7 +2,6 @@ import axios, { AxiosError } from 'axios';
 import { ISong, Response } from './song.type';
 
 const targetUrl = import.meta.env.VITE_API_URL;
-console.log(targetUrl, "why?")
 
 const fetchSongs = async ( page: number ): Promise<Response> => {
     try {
@@ -88,9 +87,15 @@ const fetchAlbumByArtist = async ( artist: string, page: number ) => {
     }
 }
 
-const createSong = async ( songData: ISong  ) => {
+const postSong = async ( songData: ISong  ) => {
     try {
-        const response = await axios.post(`${targetUrl}/create`, songData)
+        const response = await axios.post(`${targetUrl}/create`, {
+            ...songData,
+        }, {
+            headers: {
+                "Content-Type": 'application/json'
+            }
+        });
         return response.data;
     }
     catch (error: unknown) {
@@ -139,7 +144,7 @@ export {
     fetchSongsByGenre,
     fetchSongsByArtist,
     fetchAlbumByArtist,
-    createSong,
+    postSong,
     updateSong,
     deleteSong
 }

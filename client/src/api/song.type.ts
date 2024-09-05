@@ -4,6 +4,7 @@ interface Response {
 }
 
 interface ISong {
+    _id?: '',
     title: string,
     artist: string,
     album: string,
@@ -23,7 +24,7 @@ interface IArtist {
 
 interface IGenre {
     genre: string,
-    numberOfSongsInGenre: number
+    count: number
 }
 
 export type {

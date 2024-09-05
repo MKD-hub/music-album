@@ -163,7 +163,7 @@ const getAlbumByArtist = async (req: Request, res: Response): Promise<void> => {
 const createSong = async (req: Request, res: Response): Promise<void> => {
     try {
         const song = await Songs.create(req.body);
-        res.status(200).json(song);
+        res.status(200).send(song);
     }
     catch (error: unknown) {
         if (error instanceof Error) {

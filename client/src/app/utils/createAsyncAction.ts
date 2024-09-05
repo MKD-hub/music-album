@@ -1,11 +1,11 @@
 import { ActionCreatorWithOptionalPayload, ActionCreatorWithPayload, createAction} from '@reduxjs/toolkit';
 
 function createAsyncActions<P>(prefix: string): [
-  ActionCreatorWithOptionalPayload<number | undefined>,
+  ActionCreatorWithOptionalPayload<any>,
   ActionCreatorWithPayload<P>,
   ActionCreatorWithPayload<unknown>
 ] {
-  const get = createAction(`${prefix}/get`, (payload?: number) => ({
+  const get = createAction(`${prefix}/get`, (payload?: any) => ({
     // number is for pagination
     payload,
   }));
