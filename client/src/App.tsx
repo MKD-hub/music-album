@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import SongItem from "./components/SongItem"
 import { useSelector, useDispatch} from "react-redux"
-import { getSongs, selectError, selectPageNumber, selectSongs, selectStatus, incrementPage, decrementPage, selectTotalPages } from "./app/song.slice"
+import { getSongs, selectPageNumber, selectSongs, selectStatus, incrementPage, decrementPage, selectTotalPages } from "./app/song.slice"
 import GenreArtistPicker from "./components/GenreArtistPicker";
 import { Box, Button, ButtonGroup, Container, Divider, Flex, IconButton, Skeleton, Image, Text, Link } from "@chakra-ui/react";
 import { RiAddFill } from "react-icons/ri";
@@ -26,7 +26,6 @@ function App() {
   const dispatch = useDispatch();
   const songs = useSelector(selectSongs);
   const status = useSelector(selectStatus);
-  const error = useSelector(selectError);
   const currentPage = useSelector(selectPageNumber);
   const totalPages = useSelector(selectTotalPages);
 
@@ -119,7 +118,7 @@ function App() {
             >
               Maybe try <Link href="/" color={'blue'}>refreshing</Link> the page
               <br/>
-              {status === 'error' ? error.message as String : 'oops something went wrong'}
+              {status === 'error' && 'oops something went wrong'}
             </Text>
           </Container>
         }

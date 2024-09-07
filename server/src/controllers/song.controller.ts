@@ -72,19 +72,6 @@ const getGenres = async (req: Request, res: Response): Promise<void> => {
     }
 }
 
-const getArtists = async (req: Request, res: Response): Promise<void> => {
-    try {
-        const artists = await Songs.distinct('artist');
-        res.status(200).json(artists)
-    }
-    catch (error: unknown) {
-        if (error instanceof Error) {
-            res.status(500).json({ message: error.message });
-        } else {
-            res.status(500).json({ message: 'An unexpected error occurred' });
-        }
-    }
-}
 
 const getSongsByGenre = async (req: Request, res: Response): Promise<void> => {
     const page = parseInt(req.query.page as string || '1', 10);
@@ -126,22 +113,6 @@ const getSongsByGenre = async (req: Request, res: Response): Promise<void> => {
     }
 }
 
-const getSongsByArtist = async (req: Request, res: Response): Promise<void> => {
-    try {
-        const artist: string = req.params.artist ?? {};
-        const songs = await Songs.find({
-            artist: artist
-        }).select('title artist album genre')
-        res.status(200).json(songs);
-    }
-    catch (error: unknown) {
-        if (error instanceof Error) {
-            res.status(500).json({ message: error.message });
-        } else {
-            res.status(500).json({ message: 'An unexpected error occurred' });
-        }
-    }
-}
 
 const getAlbumByArtist = async (req: Request, res: Response): Promise<void> => {
     const limit = typeof req.query.limit === 'string' && !isNaN(parseInt(req.query.limit)) ? parseInt(req.query.limit) : 10;
@@ -243,9 +214,7 @@ const deleteSong = async (req: Request, res: Response): Promise<void> => {
 export {
     getSongs,
     getGenres,
-    getArtists,
     getSongsByGenre,
-    getSongsByArtist,
     getAlbumByArtist,
     createSong,
     updateSong,

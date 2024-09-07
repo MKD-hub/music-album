@@ -1,14 +1,12 @@
 import { put, call, takeLatest } from 'redux-saga/effects';
 import {
     fetchSongs,
-    fetchSongsByGenre,
-    fetchSongsByArtist
+    fetchSongsByGenre
 } from '../../api/api';
 
 
 import { fetchSongsFailure, fetchSongsSuccess } from '../song.slice';
-import { fetchArtistSongSuccess, fetchArtistSongsFailure } from '../song.slice';
-import { ISong, Response } from '../../api/song.type';
+import { Response } from '../../api/song.type';
 import { PayloadAction } from '@reduxjs/toolkit';
 
 function* getSongs( action: PayloadAction<number> ) {

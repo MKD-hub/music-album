@@ -60,19 +60,6 @@ const fetchSongsByGenre = async ( genre: string ): Promise<ISong[] | []> => {
     }
 }
 
-const fetchSongsByArtist = async ( artist: string ) => {
-    try {
-        const response = await axios.get(`${targetUrl}/song/${artist}`)
-        return response.data;
-    }
-    catch (error: unknown) {
-        if (error instanceof AxiosError) {
-            throw error.response ? error.response.data : error.message;
-        } else {
-            throw Error('Something went wrong.')
-        }
-    }
-}
 
 const fetchAlbumByArtist = async ( artist: string, page: number ) => {
     try {
@@ -144,7 +131,6 @@ export {
     fetchGenres,
     fetchArtists,
     fetchSongsByGenre,
-    fetchSongsByArtist,
     fetchAlbumByArtist,
     postSong,
     updateSong,

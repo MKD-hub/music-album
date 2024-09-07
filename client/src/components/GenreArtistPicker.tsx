@@ -1,9 +1,9 @@
-import { Box, Button, Heading, Flex, Center, Spacer, Wrap } from "@chakra-ui/react"
+import { Box, Button, Heading, Flex, Wrap } from "@chakra-ui/react"
 import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { getGenres, selectGenres } from "../app/genres.slice"
 
-import { IGenre, IArtist } from "../api/song.type"
+import { IGenre } from "../api/song.type"
 import { getSongsByGenre } from "../app/song.slice"
 
 const GenreArtistPicker = () => {
