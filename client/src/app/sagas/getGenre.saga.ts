@@ -9,7 +9,7 @@ import { IGenre } from '../../api/song.type';
 
 function* getGenres() {
     try {
-        const genres: IGenre[] = yield call(fetchGenres);
+        const genres: IGenre[] = yield call(async () => await fetchGenres());
         yield put(fetchGenreSuccess(genres))
     }
     catch (error: unknown) {

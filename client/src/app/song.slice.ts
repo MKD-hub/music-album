@@ -38,6 +38,18 @@ const songSlice = createSlice({
             else {
                 state.pageNumber = state.totalPages;
             }
+        },
+        deleteFromList: (state: songState, action: PayloadAction<string>) => {
+            state.songs = state.songs.filter((song) => action.payload !== song._id)
+        },
+        updateSingleSong: (state: songState, action: PayloadAction<Partial<ISong>>) => {
+            const updatedList = state.songs.map(song => 
+                song._id === action.payload._id ? 
+                { ...song, ...action.payload } :
+                {...song}
+            )
+
+            state.songs = [...updatedList]
         }
     },
     extraReducers: (builder) => {
@@ -45,6 +57,11 @@ const songSlice = createSlice({
         .addCase(getSongs, (state, action: PayloadAction<number | undefined>) => {
             state.pageNumber = action.payload ?? 1;
             state.status = 'pending'
+        })
+
+        .addCase(getSongsByGenre, (state, _: PayloadAction<string>) => {
+            state.pageNumber = 1;
+            state.status = 'pending';
         })
         
         .addCase(fetchSongsSuccess, (state, action: PayloadAction<Response>) => {
@@ -64,7 +81,7 @@ export const [getSongs, fetchSongsSuccess, fetchSongsFailure] = createAsyncActio
 export const [getSongsByGenre, fetchGenreSongSuccess, fetchGenreSongsFailure] = createAsyncActions<ISong[]>('songs/fetch/genre');
 export const [getSongsByArtist, fetchArtistSongSuccess, fetchArtistSongsFailure] = createAsyncActions<ISong[]>('songs/fetch/artist');
 
-export const { incrementPage, decrementPage, updateList } = songSlice.actions;
+export const { incrementPage, decrementPage, updateList, deleteFromList, updateSingleSong } = songSlice.actions;
 
 export const selectSongs = (state: { songsReducer: songState }) => state.songsReducer.songs;
 

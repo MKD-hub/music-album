@@ -87,12 +87,35 @@ const getArtists = async (req: Request, res: Response): Promise<void> => {
 }
 
 const getSongsByGenre = async (req: Request, res: Response): Promise<void> => {
+    const page = parseInt(req.query.page as string || '1', 10);
+    const limit = 10;
     try {
         const genre: string = req.params.genre ?? {};
-        const songs = await Songs.find({
-            genre: genre
-        }).select('title artist album genre')
-        res.status(200).json(songs);
+
+        if (isNaN(page) || page < 1) {
+            res.status(400).json({ message: 'Invalid page number' });
+        }
+
+        const skip = (page - 1) * limit;
+        
+        const [songs, totalCount] = await Promise.all([
+            Songs.find({ genre: genre })
+                .skip(skip)
+                .limit(limit),
+            Songs.countDocuments()
+        ]);
+
+        const totalPages = Math.ceil(totalCount / limit);
+
+        res.status(200).json({
+            songs,
+            meta: {
+                currentPage: page,
+                perPage: limit,
+                totalPages,
+                totalCount
+            }
+        });
     }
     catch (error: unknown) {
         if (error instanceof Error) {

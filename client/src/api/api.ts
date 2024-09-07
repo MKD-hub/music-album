@@ -1,5 +1,6 @@
 import axios, { AxiosError } from 'axios';
 import { ISong, Response } from './song.type';
+import { PayloadAction } from '@reduxjs/toolkit';
 
 const targetUrl = import.meta.env.VITE_API_URL;
 
@@ -107,9 +108,10 @@ const postSong = async ( songData: ISong  ) => {
     }
 }
 
-const updateSong = async ( id: string, songData: Partial<ISong> ) => {
+const updateSong = async ( action: PayloadAction<Partial<ISong>> ) => {
+    console.log(action.payload, 'actions')
     try {
-        const response = await axios.put(`${targetUrl}/update/${id}`, songData);
+        const response = await axios.put(`${targetUrl}/update/${action.payload._id}`, action.payload);
         return response.data;
     }
     catch (error: unknown) {

@@ -4,6 +4,8 @@ import rootSaga from "./sagas/root";
 import { songsReducer } from "./song.slice";
 import { genreReducer } from "./genres.slice";
 import { createSongReducer } from "./createSong.slice";
+import { deleteReducer } from "./deleteSong.slice";
+import { updateReducer } from "./updateSong.slice";
 
 const sagaMiddleWare = createSagaMiddleWare();
 
@@ -11,7 +13,9 @@ const Store = configureStore({
     reducer: {
         songsReducer,
         genreReducer,
-        createSongReducer
+        createSongReducer,
+        deleteReducer,
+        updateReducer
     },
     middleware: () => new Tuple(sagaMiddleWare)
 })

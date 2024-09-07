@@ -4,7 +4,7 @@ interface Response {
 }
 
 interface ISong {
-    _id?: '',
+    _id?: string,
     title: string,
     artist: string,
     album: string,

@@ -31,6 +31,7 @@ function App() {
   const totalPages = useSelector(selectTotalPages);
 
   const [openModal, setOpenModal] = useState(false);
+  // const [songs, setSongs] = useState(songsList);
 
   useEffect(() => {
       try {
@@ -92,6 +93,7 @@ function App() {
             list={songs}
             renderItem={(song) =>
               <SongItem
+                _id={song._id}
                 title={song.title}
                 artist={song.artist}
                 album={song.album}
@@ -117,7 +119,7 @@ function App() {
             >
               Maybe try <Link href="/" color={'blue'}>refreshing</Link> the page
               <br/>
-              {status === 'error' ? error as String : 'oops something went wrong'}
+              {status === 'error' ? error.message as String : 'oops something went wrong'}
             </Text>
           </Container>
         }

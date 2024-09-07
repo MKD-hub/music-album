@@ -1,27 +1,10 @@
 import { Box, Button, Heading, Flex, Center, Spacer, Wrap } from "@chakra-ui/react"
-import { Dispatch, SetStateAction, useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { getGenres, selectGenres } from "../app/genres.slice"
 
 import { IGenre, IArtist } from "../api/song.type"
-
-const HandleChange = (dispatch: Dispatch<any>, genresSelected: boolean, genres: IGenre[], artists: IArtist[], setSelectionList: Dispatch<SetStateAction<IGenre[] | IArtist[]>> ) => {
-  if (genresSelected) {
-    setSelectionList(genres) 
-  }
-  else {
-    if (artists.length > 0) {
-      setSelectionList(artists)
-      // if artists was fetched before, do not refetch
-    }
-    else {
-      // fetch artists here and setSelectionList
-    }
-  }
-  
-}
-
-
+import { getSongsByGenre } from "../app/song.slice"
 
 const GenreArtistPicker = () => {
 
@@ -30,11 +13,12 @@ const GenreArtistPicker = () => {
   useEffect(() => {
     dispatch(getGenres());
     setSelectionList(genres)
-  }, [genres])
+
+    // used genres.length in dependency array instead of genres to avoid infinite API calls
+  }, [genres.length])
   
   
   const dispatch = useDispatch();
-  const [selection, setSelection] = useState('Genre');
   const [selectionList, setSelectionList] = useState<IGenre[]>([]); // use selectors to get genres or artists and set this to a state
 
 
@@ -55,22 +39,8 @@ const GenreArtistPicker = () => {
           noOfLines={1}
           marginBottom={{ base: '20px', sm: '0px'}}
         >
-          Pick { selection }
+          Pick Genre
         </Heading>
-
-        <Spacer />
-
-        <Center w={{ base: '100%', sm: '62%' }} justifyContent={{ base: 'flex-start', sm: 'center'}}>
-          <Box display={'flex'} gap={'1rem'}>
-            <Button onClick={() => setSelection('Genre')}>
-              Genre
-            </Button>
-
-            <Button onClick={() => setSelection('Artist')}>
-              Artist
-            </Button>
-          </Box>
-        </Center>
 
       </Flex>
 
@@ -79,7 +49,10 @@ const GenreArtistPicker = () => {
       >
         {selectionList.map((selection) => {
           return(
-           <Button key={selection.genre}>
+           <Button 
+            key={selection.genre}
+            onClick={() => dispatch(getSongsByGenre(selection.genre))}
+           >
               {selection.genre}
               ({selection.count})
            </Button>
