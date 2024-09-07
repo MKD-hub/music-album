@@ -1,9 +1,9 @@
 import { Card, CardBody, CardHeader, Flex, IconButton, Spacer, Text, useToast } from '@chakra-ui/react';
 import { RiDeleteBin7Fill, RiEditFill } from 'react-icons/ri';
 import { Dispatch  } from '@reduxjs/toolkit';
-import { deleteSong, selectError, selectStatus } from '../app/deleteSong.slice';
-import { useDispatch, useSelector } from 'react-redux';
-import { useEffect, useState } from 'react';
+import { deleteSong } from '../app/deleteSong.slice';
+import { useDispatch } from 'react-redux';
+import { useState } from 'react';
 import UpdateSongModal from './updateSongModal';
 interface SelectionProps {
     _id: string | undefined,
@@ -28,9 +28,6 @@ const handleDelete = (dispatch: Dispatch<any>, id: string | undefined, toast: an
 const SongItem = ({ _id, title, artist, album, genre }: SelectionProps) => {
 
     const dispatch = useDispatch();
-
-    const status = useSelector(selectStatus)
-    const error = useSelector(selectError)
 
     const [open, setOpen] = useState(false);
 

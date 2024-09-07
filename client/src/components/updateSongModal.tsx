@@ -1,9 +1,9 @@
-import { Modal, ModalBody, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalFooter, Button, FormControl, FormLabel, Input, Text } from "@chakra-ui/react"
+import { Modal, ModalBody, ModalOverlay, ModalContent, ModalHeader, ModalCloseButton, ModalFooter, Button, FormControl, FormLabel, Input } from "@chakra-ui/react"
 import { Dispatch } from "@reduxjs/toolkit";
 import { Formik } from 'formik';
 import { ISong } from "../api/song.type";
-import { useDispatch, useSelector } from "react-redux";
-import { updateSong, selectStatus, selectError } from "../app/updateSong.slice";
+import { useDispatch } from "react-redux";
+import { updateSong } from "../app/updateSong.slice";
 interface ModalProps {
     isOpen: boolean,
     onClose: () => void,
@@ -18,8 +18,6 @@ const updateSongSubmit = (dispatch: Dispatch<any>, songData: ISong) => {
 const UpdateSongModal = ({ isOpen, onClose, songData }: ModalProps) => {
 
     const dispatch = useDispatch();
-    const status = useSelector(selectStatus);
-    const error = useSelector(selectError);
 
     return (
         <Modal isOpen={isOpen} onClose={onClose}>

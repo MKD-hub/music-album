@@ -13,5 +13,5 @@ createRoot(document.getElementById('root')!).render(
         <App />
       </Provider>
     </ChakraProvider>
-  </StrictMode>,
+  </StrictMode>
 )

@@ -1,7 +1,5 @@
 import mongoose from 'mongoose';
 
-
-console.log(process.env.PORT)
 const connectDB = async (dbURL: string) => {
   try {
     await mongoose.connect(dbURL);
