@@ -2,14 +2,17 @@
 
 ## installation:
 
-`cd server`
-`yarn`
-`yarn dev`
+```
+cd server
+yarn
+yarn dev
+```
 
 _to intialize the server_
-_
-`cd client`
-`yarn dev`
+```
+cd client
+yarn dev
+```
 
 _to initialize front-end_
 
