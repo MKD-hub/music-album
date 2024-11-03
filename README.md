@@ -1,7 +1,7 @@
 # Music Library App
 
 ## Purpose of this app...
-This app was intended to be an introductory exercise into basic back-end development with Express, MongoDB & Express with Redux Saga on the Front-end
+This app was intended to be an introductory exercise into basic back-end development with NodeJs, MongoDB & Express with Redux Saga on the Front-end
 
 ## installation:
 
